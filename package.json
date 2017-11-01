@@ -187,6 +187,7 @@
   },
   "dependencies": {
     "bitcoinjs-lib": "^3.3.0",
+    "blockchain.info": "^2.10.1",
     "bootstrap": "^4.0.0-beta.2",
     "chart.js": "^2.7.1",
     "cryptocompare": "^0.2.0",
@@ -208,6 +209,7 @@
     "redux": "^3.7.1",
     "redux-thunk": "^2.2.0",
     "request": "^2.83.0",
+    "socket.io": "^2.0.4",
     "source-map-support": "^0.4.15"
   },
   "devEngines": {

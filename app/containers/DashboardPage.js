@@ -1,11 +1,16 @@
-// @flow
-import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import Dashboard from '../components/Dashboard';
+import * as DashboardActions from '../actions/dashboard';
 
-export default class DashboardPage extends Component {
-  render() {
-    return (
-      <Dashboard {...this.props}/>
-    );
-  }
+function mapStateToProps(state) {
+  return {
+    dashboard: state.dashboard
+  };
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(DashboardActions, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

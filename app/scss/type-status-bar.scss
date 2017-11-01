@@ -2,7 +2,16 @@
   text-align: center;
   .type-status-bar-item {
     display: block;
-    font-size: 2em;
     padding: 1.5em 0;
+
+    .type-status-bar-item-value {
+      display: block;
+      font-size: 2.25em;
+    }
+
+    .type-status-bar-item-label {
+      color: $secondary;
+      font-size: $font-size-base;
+    }
   }
 }
