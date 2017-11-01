@@ -1,87 +1,23 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+
+import CurrencyDashboard from './CurrencyDashboard'
+import TransactionRow from './TransactionRow'
 
 import { addresses } from '../../../services'
 
 import { Container, Row, Col, ButtonGroup, Button } from 'reactstrap'
 
+import moment  from 'moment'
 import request from 'request'
 import bitcoin from 'bitcoinjs-lib'
-import moment from 'moment'
-import cc     from 'cryptocompare'
-import {Line} from 'react-chartjs-2'
+import cc      from 'cryptocompare'
 
 const ADDRESS_DATA_URL = 'https://blockchain.info/rawaddr'
 
-const LINE_OPTIONS = {
-  scales: {
-    xAxes: [{
-      type: 'time',
-      time: {
-        displayFormats: {
-           'millisecond': 'MMM DD',
-           'second': 'MMM DD',
-           'minute': 'MMM DD',
-           'hour': 'MMM DD',
-           'day': 'MMM DD',
-           'week': 'MMM DD',
-           'month': 'MMM DD',
-           'quarter': 'MMM DD',
-           'year': 'MMM DD',
-        }
-      }
-    }]
-  },
-  legend: {
-    display: false
-  }
-}
-
-
-class TransactionRow extends Component {
-  render(){
-    const color = this.props.change > 0 ? 'success' : (this.props.change === 0) ? 'dark' : 'danger'
-    return (
-      <Row key={this.props.tx.hash} className='py-2'>
-        <Col xs={9} md={8}>
-          <span className='text-primary word-break-all'>
-            {this.props.tx.hash}
-          </span>
-          <br/>
-          <span className='text-muted'>
-            {moment.unix(this.props.tx.time).format('YYYY-M-D h:mm a')}
-          </span>
-        </Col>
-        <Col xs={3} md={2} className={`text-${color} text-right`}>
-          {this.props.change}
-        </Col>
-        <Col xs={3} md={2} className='d-none d-md-block text-right'>
-          {this.props.remaining}
-        </Col>
-      </Row>
-    )
-  }
-}
-
-export default class BitcoinDashboard extends Component {
+export default class BitcoinDashboard extends CurrencyDashboard {
 
   constructor(){
     super()
-
-    this.state = {
-      addresses:   [],
-      usd_per_btc: 0.00,
-      historical: {
-        limit: 30,
-        unit:  'Day',
-        data:  []
-      }
-    }
-
-    this.fetchUSDPerBTC = this.fetchUSDPerBTC.bind(this)
-
-    this.getAddresses()
-    this.fetchUSDPerBTC()
-    this.getHistoricalData()
   }
 
   get total_value(){
@@ -105,14 +41,14 @@ export default class BitcoinDashboard extends Component {
     return current_value
   }
 
-  fetchUSDPerBTC(){
+  fetchUSDPerCrypto(){
     request({
       method: 'get',
       url: 'https://blockchain.info/ticker'
     }, (error, response, body) => {
       body = JSON.parse(body)
       this.setState({
-        usd_per_btc: body.USD.last
+        usd_per_crypto: body.USD.last
       })
     })
   }
@@ -152,10 +88,6 @@ export default class BitcoinDashboard extends Component {
         }
       ]
     }
-  }
-
-  isUserAddress(public_address){
-    return (this.state.addresses.filter(address => (address.public_address === public_address)).length > 0)
   }
 
   getTransactionsJSX(){
@@ -202,6 +134,7 @@ export default class BitcoinDashboard extends Component {
 
       jsx.unshift(
         <TransactionRow
+          key={tx.hash}
           tx={tx}
           change={tx_total_user}
           fee={fee}
@@ -248,92 +181,4 @@ export default class BitcoinDashboard extends Component {
     })
   }
 
-  setHistoricalRange(limit, unit){
-    this.setState({
-      historical: {
-        ...this.state.historical,
-        limit: limit,
-        unit:  unit
-      }
-    }, this.getHistoricalData)
-  }
-
-  getHistoricalChange(){
-    if(this.state.historical.data.length < 2){
-      return {
-        usd:        0.0,
-        percentage: 0
-      }
-    }
-
-    return {
-      usd: this.state.historical.data.slice(-1)[0].close - this.state.historical.data[0].open,
-      percentage: ((this.state.usd_per_btc / this.state.historical.data[0].open) - 1) * 100
-    }
-  }
-
-  render() {
-    const ranges = [
-      {limit: 60, unit: 'Minute', label: '1H'},
-      {limit: 24, unit: 'Hour', label: '1D'},
-      {limit: 168, unit: 'Hour', label: '1W'},
-      {limit: 30, unit: 'Day', label: '1M'},
-      {limit: 365, unit: 'Day', label: '1Y'},
-      {limit: 'none', unit: 'Day', label: 'All'},
-    ]
-    return (
-      <Container fluid={true}>
-        <Row className='type-status-bar'>
-          <Col xs={12} sm={4}>
-            <span className='type-status-bar-item'>${this.state.usd_per_btc.toFixed(2)}</span>
-          </Col>
-          <Col xs={12} sm={4}>
-            <span className='type-status-bar-item'>${this.getHistoricalChange().usd.toFixed(2)}</span>
-          </Col>
-          <Col xs={12} sm={4}>
-            <span className='type-status-bar-item'>{this.getHistoricalChange().percentage.toFixed(2)}%</span>
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={12}>
-            <ButtonGroup size="sm">
-              {ranges.map(r => {
-                return (
-                  <Button key={r.label}
-                    className={(this.state.historical.limit === r.limit && this.state.historical.unit === r.unit) ? 'active' : ''}
-                    onClick={() => this.setHistoricalRange(r.limit, r.unit)}>{r.label}</Button>
-                )
-              })}
-            </ButtonGroup>
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={12}>
-            <Line
-              data={this.getLineData()}
-              height={75}
-              options={LINE_OPTIONS} />
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={12}>
-            <Container fluid={true}>
-              <Row>
-                <Col xs={9} md={8}>Reference</Col>
-                <Col xs={3} md={2} className='text-right'>Amount</Col>
-                <Col xs={3} md={2} className='d-none d-md-block text-right'>Balance</Col>
-              </Row>
-              {this.getTransactionsJSX()}
-            </Container>
-          </Col>
-        </Row>
-      </Container>
-    );
-  }
 }
-
-// export default (props) => {
-//   return (
-//     <BitcoinDashboard {...props}/>
-//   )
-// }

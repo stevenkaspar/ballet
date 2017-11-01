@@ -42,7 +42,7 @@ export default class Dashboard extends Component {
           link:  <CurrencyCardLink key={key} to={`/dashboard/${key}`} link_text={
             <span>
               <span className='currency-card-link-label'>{key}</span>
-              <span className='currency-card-link-subtext'>Addresses({type_addresses.length})</span>
+              <span className='currency-card-link-subtext'>{type_addresses.length} Address{(type_addresses.length === 1) ? 'es' : ''}</span>
             </span>
           }/>,
           route: <Route key={key} path={`/dashboard/${key}`} component={Types[key]}/>
