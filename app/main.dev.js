@@ -27,6 +27,10 @@ if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true')
   require('module').globalPaths.push(p);
 }
 
+(() => {
+  global.USER_PATH = app.getPath('userData')
+  global.DB_PATH   = `${global.USER_PATH}/ballet-db.json`
+})();
 const installExtensions = async () => {
   const installer = require('electron-devtools-installer');
   const forceDownload = !!process.env.UPGRADE_EXTENSIONS;

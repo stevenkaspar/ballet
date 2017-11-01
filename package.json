@@ -73,16 +73,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/chentsulin/electron-react-boilerplate.git"
+    "url": "git+https://github.com/stevenkaspar/ballet.git"
   },
   "author": {
-    "name": "C. T. Lin",
-    "email": "chentsulin@gmail.com",
-    "url": "https://github.com/chentsulin"
+    "name": "Steven Kaspar",
+    "email": "srkaspar@gmail.com",
+    "url": "https://github.com/stevenkaspar"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/chentsulin/electron-react-boilerplate/issues"
+    "url": "https://github.com/stevenkaspar/ballet/issues"
   },
   "keywords": [
     "electron",
@@ -95,7 +95,7 @@
     "hot",
     "reload"
   ],
-  "homepage": "https://github.com/chentsulin/electron-react-boilerplate#readme",
+  "homepage": "https://github.com/stevenkaspar/ballet#readme",
   "jest": {
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/internals/mocks/fileMock.js",
@@ -186,19 +186,28 @@
     "webpack-merge": "^4.1.0"
   },
   "dependencies": {
+    "bitcoinjs-lib": "^3.3.0",
+    "bootstrap": "^4.0.0-beta.2",
+    "chart.js": "^2.7.1",
+    "cryptocompare": "^0.2.0",
     "devtron": "^1.4.0",
     "electron-debug": "^1.2.0",
     "font-awesome": "^4.7.0",
     "history": "^4.6.3",
+    "lowdb": "^1.0.0",
+    "moment": "^2.19.1",
     "react": "^15.6.1",
+    "react-chartjs-2": "^2.6.4",
     "react-dom": "^15.6.1",
     "react-hot-loader": "3.0.0-beta.6",
     "react-redux": "^5.0.5",
     "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1",
     "react-router-redux": "^5.0.0-alpha.6",
+    "reactstrap": "^5.0.0-alpha.3",
     "redux": "^3.7.1",
     "redux-thunk": "^2.2.0",
+    "request": "^2.83.0",
     "source-map-support": "^0.4.15"
   },
   "devEngines": {

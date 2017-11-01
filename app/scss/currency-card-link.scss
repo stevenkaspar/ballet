@@ -1,0 +1,29 @@
+.currency-card-link {
+  width: 300px;
+
+  .currency-card-link-wrapper {
+    border: 2px solid $primary;
+    border-width: 0 0 0 2px;
+    background: $white;
+    border-radius: $border-radius;
+
+    a {
+      display: block;
+      text-decoration: none;
+      &:hover,
+      &:focus,
+      &:active {
+        text-decoration: none;
+      }
+    }
+
+    .currency-card-link-label {
+      display: block;
+      font-size: 1.5em;
+    }
+    .currency-card-link-subtext {
+      color: $secondary;
+    }
+
+  }
+}
